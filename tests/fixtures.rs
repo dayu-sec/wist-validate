@@ -3,7 +3,7 @@ use std::path::PathBuf;
 
 use wist_contracts::action_plan::ActionPlanContract;
 use wist_contracts::action_result::{
-    ActionOutputs, ActionResultContract, FinalStatus, StepActionRecord, StepStatus,
+    ActionOutputs, ActionResultContract, FinalStatus, StepRecord, StepStatus,
 };
 use wist_contracts::agent_config::{
     AgentConfigContract, AgentSection, ControlPlaneSection, DiscoverySection, ExecutionSection,
@@ -127,7 +127,7 @@ fn sample_action_result(final_status: FinalStatus) -> ActionResultContract {
         request_id: Some("req_001".to_string()),
         final_status,
         exit_reason: None,
-        step_records: vec![StepActionRecord {
+        step_records: vec![StepRecord {
             step_id: "step_collect".to_string(),
             attempt: 1,
             op: Some("process.list".to_string()),
