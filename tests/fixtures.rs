@@ -1,12 +1,12 @@
 use std::fs;
 use std::path::PathBuf;
 
-use wist_contracts::action_plan::ActionPlanContract;
+use wist_contracts::action_plan::ActionPlan;
 use wist_contracts::action_result::{
-    ActionOutputs, ActionResultContract, FinalStatus, StepRecord, StepStatus,
+    ActionOutputs, ActionResult, FinalStatus, StepRecord, StepStatus,
 };
 use wist_contracts::agent_config::{
-    AgentConfigContract, AgentSection, ControlPlaneSection, DiscoverySection, ExecutionSection,
+    AgentConfig, AgentSection, ControlPlaneSection, DiscoverySection, ExecutionSection,
     LogFileInputSection, LogsFileOutputSection, LogsOutputSection, LogsSection,
     LogsTcpOutputSection, PathsSection, TelemetrySection,
 };
@@ -29,13 +29,13 @@ fn fixture_text(relative: &str) -> String {
     fs::read_to_string(path).expect("read fixture")
 }
 
-fn config_fixture(relative: &str) -> AgentConfigContract {
+fn config_fixture(relative: &str) -> AgentConfig {
     toml::from_str(&fixture_text(relative)).expect("deserialize config fixture")
 }
 
 #[test]
 fn action_plan_valid_fixture_passes() {
-    let fixture: ActionPlanContract =
+    let fixture: ActionPlan =
         serde_json::from_str(&fixture_text("contracts/action-plan/valid/basic.json"))
             .expect("deserialize action plan fixture");
 
@@ -44,7 +44,7 @@ fn action_plan_valid_fixture_passes() {
 
 #[test]
 fn action_plan_invalid_kind_fixture_fails() {
-    let fixture: ActionPlanContract =
+    let fixture: ActionPlan =
         serde_json::from_str(&fixture_text("contracts/action-plan/invalid/bad-kind.json"))
             .expect("deserialize action plan fixture");
 
@@ -54,7 +54,7 @@ fn action_plan_invalid_kind_fixture_fails() {
 
 #[test]
 fn action_plan_invalid_window_fixture_fails() {
-    let fixture: ActionPlanContract = serde_json::from_str(&fixture_text(
+    let fixture: ActionPlan = serde_json::from_str(&fixture_text(
         "contracts/action-plan/invalid/expired-window.json",
     ))
     .expect("deserialize action plan fixture");
@@ -65,7 +65,7 @@ fn action_plan_invalid_window_fixture_fails() {
 
 #[test]
 fn action_plan_invalid_step_kind_fixture_fails() {
-    let fixture: ActionPlanContract = serde_json::from_str(&fixture_text(
+    let fixture: ActionPlan = serde_json::from_str(&fixture_text(
         "contracts/action-plan/invalid/bad-step-kind.json",
     ))
     .expect("deserialize action plan fixture");
@@ -76,7 +76,7 @@ fn action_plan_invalid_step_kind_fixture_fails() {
 
 #[test]
 fn action_result_valid_fixture_passes() {
-    let fixture: ActionResultContract =
+    let fixture: ActionResult =
         serde_json::from_str(&fixture_text("contracts/action-result/valid/basic.json"))
             .expect("deserialize action result fixture");
 
@@ -85,7 +85,7 @@ fn action_result_valid_fixture_passes() {
 
 #[test]
 fn action_result_invalid_fixture_fails() {
-    let fixture: ActionResultContract = serde_json::from_str(&fixture_text(
+    let fixture: ActionResult = serde_json::from_str(&fixture_text(
         "contracts/action-result/invalid/missing-step-records.json",
     ))
     .expect("deserialize action result fixture");
@@ -118,8 +118,8 @@ fn runtime_state_valid_fixture_passes() {
     validate_execution_state(&fixture).expect("valid runtime state");
 }
 
-fn sample_action_result(final_status: FinalStatus) -> ActionResultContract {
-    ActionResultContract {
+fn sample_action_result(final_status: FinalStatus) -> ActionResult {
+    ActionResult {
         api_version: "v1".to_string(),
         kind: "action_result".to_string(),
         action_id: "act_001".to_string(),
@@ -147,7 +147,7 @@ fn sample_action_result(final_status: FinalStatus) -> ActionResultContract {
     }
 }
 
-fn sample_action_plan() -> ActionPlanContract {
+fn sample_action_plan() -> ActionPlan {
     serde_json::from_str(&fixture_text("contracts/action-plan/valid/basic.json"))
         .expect("deserialize action plan fixture")
 }
@@ -308,7 +308,7 @@ fn action_result_failed_without_failed_step_fails_when_only_timed_out() {
 
 #[test]
 fn config_with_more_than_one_running_action_is_rejected() {
-    let fixture = AgentConfigContract::new(
+    let fixture = AgentConfig::new(
         AgentSection {
             agent_id: Some("agent-001".to_string()),
             environment_id: Some("prod".to_string()),
@@ -346,7 +346,7 @@ fn config_with_more_than_one_running_action_is_rejected() {
 
 #[test]
 fn config_with_all_discovery_probes_disabled_is_rejected() {
-    let mut fixture = AgentConfigContract::new(
+    let mut fixture = AgentConfig::new(
         AgentSection {
             agent_id: Some("agent-001".to_string()),
             environment_id: Some("prod".to_string()),
@@ -391,7 +391,7 @@ fn config_with_all_discovery_probes_disabled_is_rejected() {
 
 #[test]
 fn config_with_duplicate_log_input_ids_is_rejected() {
-    let fixture = AgentConfigContract::new(
+    let fixture = AgentConfig::new(
         AgentSection {
             agent_id: Some("agent-001".to_string()),
             environment_id: Some("prod".to_string()),
@@ -462,7 +462,7 @@ fn config_with_duplicate_log_input_ids_is_rejected() {
 
 #[test]
 fn config_with_invalid_log_startup_position_is_rejected() {
-    let fixture = AgentConfigContract::new(
+    let fixture = AgentConfig::new(
         AgentSection {
             agent_id: Some("agent-001".to_string()),
             environment_id: Some("prod".to_string()),
@@ -525,7 +525,7 @@ fn config_with_invalid_log_startup_position_is_rejected() {
 
 #[test]
 fn config_with_invalid_log_spool_over_limit_is_rejected() {
-    let fixture = AgentConfigContract::new(
+    let fixture = AgentConfig::new(
         AgentSection {
             agent_id: Some("agent-001".to_string()),
             environment_id: Some("prod".to_string()),
@@ -634,7 +634,7 @@ fn config_with_zero_max_lines_per_tick_is_rejected() {
 
 #[test]
 fn config_with_invalid_tcp_output_framing_is_rejected() {
-    let fixture = AgentConfigContract::new(
+    let fixture = AgentConfig::new(
         AgentSection {
             agent_id: Some("agent-001".to_string()),
             environment_id: Some("prod".to_string()),

@@ -4,12 +4,12 @@ use std::collections::BTreeSet;
 
 use wist_contracts::API_VERSION_V1;
 use wist_contracts::action_plan::{
-    ACTION_PLAN_KIND, ActionPlanContract, STEP_KIND_INVOKE, is_known_step_kind,
+    ACTION_PLAN_KIND, ActionPlan, STEP_KIND_INVOKE, is_known_step_kind,
 };
 
 use crate::{ValidationError, parse_rfc3339, require_non_empty};
 
-pub fn validate_action_plan(contract: &ActionPlanContract) -> Result<(), ValidationError> {
+pub fn validate_action_plan(contract: &ActionPlan) -> Result<(), ValidationError> {
     if contract.api_version != API_VERSION_V1 {
         return Err(ValidationError::new("invalid_api_version"));
     }

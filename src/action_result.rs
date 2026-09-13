@@ -2,12 +2,12 @@
 
 use wist_contracts::API_VERSION_V1;
 use wist_contracts::action_result::{
-    ACTION_RESULT_KIND, ActionResultContract, FinalStatus, StepStatus,
+    ACTION_RESULT_KIND, ActionResult, FinalStatus, StepStatus,
 };
 
 use crate::{ValidationError, parse_rfc3339, require_non_empty};
 
-pub fn validate_action_result(contract: &ActionResultContract) -> Result<(), ValidationError> {
+pub fn validate_action_result(contract: &ActionResult) -> Result<(), ValidationError> {
     if contract.api_version != API_VERSION_V1 {
         return Err(ValidationError::new("invalid_api_version"));
     }
@@ -65,7 +65,7 @@ pub fn validate_action_result(contract: &ActionResultContract) -> Result<(), Val
 }
 
 fn validate_final_status_consistency(
-    contract: &ActionResultContract,
+    contract: &ActionResult,
 ) -> Result<(), ValidationError> {
     match contract.final_status {
         FinalStatus::Succeeded => {

@@ -3,11 +3,11 @@
 use std::collections::HashSet;
 
 use wist_contracts::SCHEMA_VERSION_V1;
-use wist_contracts::agent_config::{AgentConfigContract, LogsSection};
+use wist_contracts::agent_config::{AgentConfig, LogsSection};
 
 use crate::{ValidationError, require_non_empty};
 
-pub fn validate_config(contract: &AgentConfigContract) -> Result<(), ValidationError> {
+pub fn validate_config(contract: &AgentConfig) -> Result<(), ValidationError> {
     if contract.schema_version != SCHEMA_VERSION_V1 {
         return Err(ValidationError::new("invalid_schema_version"));
     }
