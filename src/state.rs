@@ -1,7 +1,7 @@
 //! Local state validation entrypoints.
 
 use wist_contracts::SCHEMA_VERSION_V1;
-use wist_contracts::state_exec::AgentRuntimeState;
+use wist_contracts::agent_state::AgentRuntimeState;
 
 use crate::{ValidationError, parse_rfc3339, require_non_empty};
 

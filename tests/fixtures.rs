@@ -10,10 +10,10 @@ use wist_contracts::agent_config::{
     LogFileInputSection, LogsFileOutputSection, LogsOutputSection, LogsSection,
     LogsTcpOutputSection, PathsSection, TelemetrySection,
 };
+use wist_contracts::agent_state::AgentRuntimeState;
 use wist_contracts::gateway::{
     AckStatus, ActionPlanAck, DispatchActionPlan, ReportActionResult, ResultAttestation,
 };
-use wist_contracts::state_exec::AgentRuntimeState;
 use wist_validate::action_plan::validate_action_plan;
 use wist_validate::action_result::validate_action_result;
 use wist_validate::config::validate_config;
@@ -24,7 +24,7 @@ use wist_validate::state::validate_execution_state;
 
 fn fixture_text(relative: &str) -> String {
     let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-        .join("../../fixtures")
+        .join("../warp-insight/fixtures")
         .join(relative);
     fs::read_to_string(path).expect("read fixture")
 }
