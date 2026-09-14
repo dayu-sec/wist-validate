@@ -24,7 +24,7 @@ use wist_validate::state::validate_execution_state;
 
 fn fixture_text(relative: &str) -> String {
     let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-        .join("../warp-insight/fixtures")
+        .join("fixtures")
         .join(relative);
     fs::read_to_string(path).expect("read fixture")
 }
