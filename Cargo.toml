@@ -16,8 +16,9 @@ categories = ["development-tools", "config", "data-structures"]
 [dependencies]
 serde_json = "1.0"
 time = { version = "0.3", features = ["formatting", "parsing"] }
-toml = "0.8"
-wist-contracts = { version = "0.1.1", path = "../wist-contracts" }
+toml = "1.0"
+#wist-contracts = { version = "0.1.1", path = "../wist-contracts" }
+wist-contracts = { version = "0.1"  }
 
 [lib]
 path = "src/lib.rs"

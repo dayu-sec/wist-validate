@@ -1,9 +1,7 @@
 //! `ActionResult` validation entrypoints.
 
 use wist_contracts::API_VERSION_V1;
-use wist_contracts::action_result::{
-    ACTION_RESULT_KIND, ActionResult, FinalStatus, StepStatus,
-};
+use wist_contracts::action_result::{ACTION_RESULT_KIND, ActionResult, FinalStatus, StepStatus};
 
 use crate::{ValidationError, parse_rfc3339, require_non_empty};
 
@@ -64,9 +62,7 @@ pub fn validate_action_result(contract: &ActionResult) -> Result<(), ValidationE
     Ok(())
 }
 
-fn validate_final_status_consistency(
-    contract: &ActionResult,
-) -> Result<(), ValidationError> {
+fn validate_final_status_consistency(contract: &ActionResult) -> Result<(), ValidationError> {
     match contract.final_status {
         FinalStatus::Succeeded => {
             if contract.exit_reason.is_some() {
