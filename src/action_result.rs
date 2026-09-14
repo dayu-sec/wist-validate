@@ -32,10 +32,10 @@ pub fn validate_action_result(contract: &ActionResult) -> Result<(), ValidationE
         .as_deref()
         .map(|value| parse_rfc3339(value, "invalid_finished_at"))
         .transpose()?;
-    if let (Some(started_at), Some(finished_at)) = (started_at, finished_at) {
-        if finished_at < started_at {
-            return Err(ValidationError::new("finished_before_started"));
-        }
+    if let (Some(started_at), Some(finished_at)) = (started_at, finished_at)
+        && finished_at < started_at
+    {
+        return Err(ValidationError::new("finished_before_started"));
     }
 
     for step in &contract.step_records {

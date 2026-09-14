@@ -5,7 +5,6 @@ Static validators for contracts, configuration, and runtime state.
 [![crates.io](https://img.shields.io/crates/v/wist-validate.svg)](https://crates.io/crates/wist-validate)
 [![docs.rs](https://img.shields.io/docsrs/wist-validate/latest.svg)](https://docs.rs/wist-validate)
 [![Downloads](https://img.shields.io/crates/d/wist-validate.svg)](https://crates.io/crates/wist-validate)
-[![MSRV](https://img.shields.io/badge/rustc-1.85+-orange.svg)](#)
 [![CI](https://github.com/dayu-sec/wist-validate/actions/workflows/ci.yml/badge.svg)](https://github.com/dayu-sec/wist-validate/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/dayu-sec/wist-validate/branch/main/graph/badge.svg)](https://codecov.io/gh/dayu-sec/wist-validate)
 [![dependency status](https://deps.rs/repo/github/dayu-sec/wist-validate/status.svg)](https://deps.rs/repo/github/dayu-sec/wist-validate)
