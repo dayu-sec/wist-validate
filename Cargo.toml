@@ -13,11 +13,14 @@ keywords = ["wist", "validation", "contracts", "config"]
 categories = ["development-tools", "config", "data-structures"]
 
 [dependencies]
-serde_json = "1.0"
 time = { version = "0.3", features = ["formatting", "parsing"] }
-toml = "1.1"
 #wist-contracts = { version = "0.1.1", path = "../wist-contracts" }
 wist-contracts = { version = "0.1"  }
+
+# 仅供集成测试（tests/）与单元测试反序列化 fixture 使用，不属于运行时依赖。
+[dev-dependencies]
+serde_json = "1.0"
+toml = "1.1"
 
 [lib]
 path = "src/lib.rs"
