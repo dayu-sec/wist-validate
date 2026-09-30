@@ -109,6 +109,51 @@ fn config_invalid_fixture_fails() {
     assert_eq!(err.code, "missing_control_plane_endpoint");
 }
 
+/// 契约收口（2026-09-30）：`control_plane` 不再有 `bearer_token` 字段 ——
+/// 带它的配置应当**解不出来**（`deny_unknown_fields`），而不是静默忽略。
+#[test]
+fn control_plane_with_a_legacy_bearer_token_is_rejected() {
+    let text = r#"
+schema_version = "v1"
+
+[agent]
+environment_id = "prod"
+instance_name = "instance-001"
+
+[control_plane]
+enabled = false
+endpoint = "https://control.local"
+bearer_token = "wic_legacy"
+
+[paths]
+root_dir = "/tmp/root"
+run_dir = "run"
+state_dir = "state"
+log_dir = "log"
+
+[execution]
+max_running_actions = 1
+cancel_grace_ms = 5000
+default_stdout_limit_bytes = 1048576
+default_stderr_limit_bytes = 1048576
+
+[telemetry.logs]
+spool_dir = "state/spool/logs"
+
+[telemetry.logs.output]
+kind = "file"
+
+[telemetry.logs.output.file]
+path = "log/out.ndjson"
+"#;
+
+    let decoded = toml::from_str::<AgentConfig>(text);
+    assert!(
+        decoded.is_err(),
+        "带 bearer_token 的旧配置必须被拒（字段已删）"
+    );
+}
+
 #[test]
 fn runtime_state_valid_fixture_passes() {
     let fixture: AgentRuntimeState =
@@ -320,7 +365,6 @@ fn config_with_more_than_one_running_action_is_rejected() {
             enrollment_token: None,
             credential_request: None,
             credential_id: None,
-            bearer_token: None,
             credential_expires_at: None,
             tls_mode: None,
             trust_bundle: None,
@@ -358,7 +402,6 @@ fn config_with_all_discovery_probes_disabled_is_rejected() {
             enrollment_token: None,
             credential_request: None,
             credential_id: None,
-            bearer_token: None,
             credential_expires_at: None,
             tls_mode: None,
             trust_bundle: None,
@@ -403,7 +446,6 @@ fn config_with_duplicate_log_input_ids_is_rejected() {
             enrollment_token: None,
             credential_request: None,
             credential_id: None,
-            bearer_token: None,
             credential_expires_at: None,
             tls_mode: None,
             trust_bundle: None,
@@ -474,7 +516,6 @@ fn config_with_invalid_log_startup_position_is_rejected() {
             enrollment_token: None,
             credential_request: None,
             credential_id: None,
-            bearer_token: None,
             credential_expires_at: None,
             tls_mode: None,
             trust_bundle: None,
@@ -537,7 +578,6 @@ fn config_with_invalid_log_spool_over_limit_is_rejected() {
             enrollment_token: None,
             credential_request: None,
             credential_id: None,
-            bearer_token: None,
             credential_expires_at: None,
             tls_mode: None,
             trust_bundle: None,
@@ -646,7 +686,6 @@ fn config_with_invalid_tcp_output_framing_is_rejected() {
             enrollment_token: None,
             credential_request: None,
             credential_id: None,
-            bearer_token: None,
             credential_expires_at: None,
             tls_mode: None,
             trust_bundle: None,
