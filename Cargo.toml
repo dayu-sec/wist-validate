@@ -1,6 +1,6 @@
 [package]
 name = "wist-validate"
-version = "0.2.0" #@gxl:set(version)
+version = "0.2.1" #@gxl:set(version)
 edition = "2024"
 license = "Apache-2.0"
 authors = ["wist Dev Team"]
@@ -17,8 +17,8 @@ time = { version = "0.3", features = ["formatting", "parsing"] }
 #wist-contracts = { version = "0.3", path = "../wist-contracts" }
 wist-contracts = { version = "0.3" }
 # 跨进程 seam 报文（agent 面）。
-wist-api = { version = "0.3" }
-#wist-api = { version = "0.3", path = "../wist-api" }
+wist-api = { version = "0.4" }
+#wist-api = { version = "0.4", path = "../wist-api" }
 
 # 仅供集成测试（tests/）与单元测试反序列化 fixture 使用，不属于运行时依赖。
 [dev-dependencies]
