@@ -1,6 +1,6 @@
 [package]
 name = "wist-validate"
-version = "0.1.4" #@gxl:set(version)
+version = "0.1.5" #@gxl:set(version)
 edition = "2024"
 license = "Apache-2.0"
 authors = ["wist Dev Team"]
@@ -14,8 +14,8 @@ categories = ["development-tools", "config", "data-structures"]
 
 [dependencies]
 time = { version = "0.3", features = ["formatting", "parsing"] }
-#wist-contracts = { version = "0.1.1", path = "../wist-contracts" }
-wist-contracts = { version = "0.2" }
+#wist-contracts = { version = "0.3", path = "../wist-contracts" }
+wist-contracts = { version = "0.3" }
 
 # 仅供集成测试（tests/）与单元测试反序列化 fixture 使用，不属于运行时依赖。
 [dev-dependencies]
