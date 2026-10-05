@@ -1,6 +1,9 @@
 use std::fs;
 use std::path::PathBuf;
 
+use wist_api::gateway::{
+    AckStatus, ActionPlanAck, DispatchActionPlan, ReportActionResult, ResultAttestation,
+};
 use wist_contracts::action_plan::ActionPlan;
 use wist_contracts::action_result::{
     ActionOutputs, ActionResult, FinalStatus, StepRecord, StepStatus,
@@ -11,9 +14,6 @@ use wist_contracts::agent_config::{
     LogsTcpOutputSection, PathsSection, TelemetrySection,
 };
 use wist_contracts::agent_state::AgentRuntimeState;
-use wist_contracts::gateway::{
-    AckStatus, ActionPlanAck, DispatchActionPlan, ReportActionResult, ResultAttestation,
-};
 use wist_validate::action_plan::validate_action_plan;
 use wist_validate::action_result::validate_action_result;
 use wist_validate::config::validate_config;
