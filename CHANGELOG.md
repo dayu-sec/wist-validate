@@ -3,6 +3,13 @@
 本文件记录 `wist-validate` 的所有重要变更。格式遵循 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)，
 版本号遵循[语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [0.2.2] - 2026-10-06
+
+### 变更
+
+- 依赖 `wist-api` 由 `0.4` 升到 **`0.5`**（该版把 `gateway` / `work` / `agent_uplink` 规范成 `v1` 子模块，
+  报文路径经 `pub use v1::*` 不变——**非破坏**）。公共 API 无变化。
+
 ## [0.2.1] - 2026-10-05
 
 ### 变更
