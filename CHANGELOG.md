@@ -3,6 +3,22 @@
 本文件记录 `wist-validate` 的所有重要变更。格式遵循 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)，
 版本号遵循[语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [0.3.0] - 2026-10-06
+
+### 变更（不兼容）
+
+- 依赖 `wist-api` 由 `0.5` 升到 **`0.6`**：后者把杂物袋模块 `gateway` 拆成
+  `action_plan` / `action_result` / `facts` / `discovery_policies`（**线上 JSON 不变**）。
+  本 crate 的校验入口（`validate_dispatch_action_plan` / `validate_action_plan_ack` /
+  `validate_report_action_result`）接受这些报文类型，故**类型的 crate 归属未变、但版本变了**——
+  消费方拿 `wist-api 0.5` 构造的报文现在与这里的入参不是同一个类型。
+
+### 说明（升级序）
+
+- 本 crate 必须与 `wist-api 0.6` **同批**升级：`wist-api` → `wist-validate` → `wist-agentd`。
+  否则依赖图里会同时出现 `wist-api` 0.5 与 0.6，同名报文变成两个不同类型（编译期
+  `expected ReportActionResult, found a different ReportActionResult`）。
+
 ## [0.2.2] - 2026-10-06
 
 ### 变更

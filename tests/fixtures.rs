@@ -1,9 +1,8 @@
 use std::fs;
 use std::path::PathBuf;
 
-use wist_api::gateway::{
-    AckStatus, ActionPlanAck, DispatchActionPlan, ReportActionResult, ResultAttestation,
-};
+use wist_api::action_plan::{AckStatus, ActionPlanAck, DispatchActionPlan};
+use wist_api::action_result::{ReportActionResult, ResultAttestation};
 use wist_contracts::action_plan::ActionPlan;
 use wist_contracts::action_result::{
     ActionOutputs, ActionResult, FinalStatus, StepRecord, StepStatus,

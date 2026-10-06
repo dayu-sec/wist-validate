@@ -1,9 +1,9 @@
 //! Gateway envelope validation entrypoints.
 
-use wist_api::gateway::{
+use wist_api::action_plan::{
     ACTION_PLAN_ACK_KIND, AckStatus, ActionPlanAck, DISPATCH_ACTION_PLAN_KIND, DispatchActionPlan,
-    REPORT_ACTION_RESULT_KIND, ReportActionResult,
 };
+use wist_api::action_result::{REPORT_ACTION_RESULT_KIND, ReportActionResult};
 use wist_contracts::API_VERSION_V1;
 
 use crate::action_plan::validate_action_plan;
@@ -130,7 +130,7 @@ pub fn validate_report_action_result(contract: &ReportActionResult) -> Result<()
 
 #[cfg(test)]
 mod tests {
-    use wist_api::gateway::ResultAttestation;
+    use wist_api::action_result::ResultAttestation;
     use wist_contracts::action_plan::ActionPlan;
     use wist_contracts::action_result::{ActionResult, FinalStatus, StepRecord, StepStatus};
 
