@@ -3,6 +3,15 @@
 本文件记录 `wist-validate` 的所有重要变更。格式遵循 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)，
 版本号遵循[语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [0.4.0] - 2026-10-09
+
+### 变更（不兼容）
+
+- **对齐 `wist-contracts` 0.7 / `wist-api` 0.7**：依赖由 `wist-contracts 0.3` / `wist-api 0.6` 升到
+  `0.7` / `0.7`（0.4–0.7 期间 seam 报文陆续迁入 `wist-api`）。本 crate 的校验入口大量以
+  `wist_contracts` 的 `ActionResult` / `ActionPlan` / `AgentConfig` / `AgentRuntimeState` 为参数，
+  **消费方需同样升到 `wist-contracts` 0.7 + `wist-api` 0.7**，否则跨边界类型对不上。
+
 ## [0.3.0] - 2026-10-06
 
 ### 变更（不兼容）
