@@ -1,8 +1,7 @@
-//! Static validators for contracts, config, and runtime state.
+//! Static validators for contracts and runtime state.
 
 pub mod action_plan;
 pub mod action_result;
-pub mod config;
 pub mod gateway;
 pub mod state;
 
@@ -20,14 +19,16 @@ impl ValidationError {
     }
 }
 
-pub(crate) fn require_non_empty(value: &str, code: &'static str) -> Result<(), ValidationError> {
+/// 值非空白即通过（供上层校验复用）。
+pub fn require_non_empty(value: &str, code: &'static str) -> Result<(), ValidationError> {
     if value.trim().is_empty() {
         return Err(ValidationError::new(code));
     }
     Ok(())
 }
 
-pub(crate) fn parse_rfc3339(
+/// 解析 RFC3339 时间戳（失败按 `code` 报错）。
+pub fn parse_rfc3339(
     value: &str,
     code: &'static str,
 ) -> Result<OffsetDateTime, ValidationError> {

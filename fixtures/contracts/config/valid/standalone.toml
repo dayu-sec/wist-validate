@@ -1,4 +1,0 @@
-schema_version = "v1"
-
-[agent]
-environment_id = "prod-cn"

@@ -3,6 +3,18 @@
 本文件记录 `wist-validate` 的所有重要变更。格式遵循 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)，
 版本号遵循[语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [0.5.0] - 2026-10-11
+
+### 变更（不兼容）
+
+- **对齐 `wist-contracts` 0.8 / `wist-api` 0.8**：依赖升到 `0.8` / `0.8`。本 crate 的校验入口以
+  `wist_contracts` 的类型为参数（`ActionResult` / `ActionPlan` / `AgentRuntimeState` …），
+  **消费方需同样升到 `wist-contracts` 0.8 + `wist-api` 0.8**，否则跨边界类型对不上。
+- **`config` 模块删除**：agent 配置校验 `validate_config` 已随 `AgentConfig` 一起移到
+  `wist-agentd::config::validate`（`wist-contracts` 删了 `agent_config` 模块）。本 crate 不再提供
+  `config` 校验；其 fixture 测试也一并迁入 `wist-agentd`。通用助手 `require_non_empty` /
+  `parse_rfc3339` 仍在这里（改为 `pub`，供上层复用）。
+
 ## [0.4.0] - 2026-10-09
 
 ### 变更（不兼容）
