@@ -28,10 +28,7 @@ pub fn require_non_empty(value: &str, code: &'static str) -> Result<(), Validati
 }
 
 /// 解析 RFC3339 时间戳（失败按 `code` 报错）。
-pub fn parse_rfc3339(
-    value: &str,
-    code: &'static str,
-) -> Result<OffsetDateTime, ValidationError> {
+pub fn parse_rfc3339(value: &str, code: &'static str) -> Result<OffsetDateTime, ValidationError> {
     OffsetDateTime::parse(value, &Rfc3339).map_err(|_| ValidationError::new(code))
 }
 
