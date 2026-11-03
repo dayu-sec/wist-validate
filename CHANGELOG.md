@@ -3,6 +3,14 @@
 本文件记录 `wist-validate` 的所有重要变更。格式遵循 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)，
 版本号遵循[语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [0.7.0] - 2026-11-03
+
+### 变更（不兼容）
+
+- **对齐 `wist-api` 0.10**：`wist-api` 依赖升到 `0.10`（`wist-contracts` 仍是 `0.9`）。
+  本 crate 的校验入口以 `wist_api` 的 seam 类型为参数，**消费方需同样升到 `wist-api` 0.10** ——
+  否则 cargo 会同时保留两份 `wist-api`，跨边界类型对不上（mismatched types）。
+
 ## [0.6.0] - 2026-10-18
 
 ### 变更（不兼容）
