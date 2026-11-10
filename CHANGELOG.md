@@ -3,6 +3,15 @@
 本文件记录 `wist-validate` 的所有重要变更。格式遵循 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)，
 版本号遵循[语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [0.9.0] - 2026-11-10
+
+### 变更（依赖）
+
+- **对齐 `wist-contracts 0.11` + `wist-api 0.11`**。采集状态改多字段正交模型，
+  `AgentLocalCollection` 新增 `prerequisites` / `result` / `reasons`。
+- 本 crate 的校验入口以 `wist_contracts` 类型为参数，**消费方需同样升到 contracts 0.11**，
+  否则 cargo 会同时保留两份 contracts、跨边界类型对不上（mismatched types）。
+
 ## [0.8.0] - 2026-11-03
 
 ### 变更（不兼容）
