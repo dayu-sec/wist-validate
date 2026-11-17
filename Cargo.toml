@@ -17,7 +17,7 @@ time = { version = "0.3", features = ["formatting", "parsing"] }
 wist-contracts = { version = "0.11" }
 #wist-contracts = { version = "0.11", path = "../wist-contracts" }
 # 跨进程 seam 报文（agent 面）。
-wist-api = { version = "0.11" }
+wist-api = { version = "0.12" }
 #wist-api = { version = "0.11", path = "../wist-api" }
 
 # 仅供集成测试（tests/）反序列化 fixture 使用，不属于运行时依赖。
