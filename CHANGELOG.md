@@ -3,6 +3,14 @@
 本文件记录 `wist-validate` 的所有重要变更。格式遵循 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)，
 版本号遵循[语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [0.10.0] - 2026-11-21
+
+### 变更（依赖）
+
+- 对齐 `wist-contracts 0.12.0`（新增采集来源 `KeyProcessMetrics`）与 `wist-api 0.13.0`。
+  本仓校验逻辑无改动；对外暴露的报文类型来自 api/contracts，所以随它们升 minor。
+- 三个 crate（contracts / api / validate）必须**同批**发布，混用会出现两份 contracts。
+
 ## [0.9.0] - 2026-11-10
 
 ### 变更（依赖）
