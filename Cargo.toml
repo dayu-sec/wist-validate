@@ -35,5 +35,7 @@ path = "src/lib.rs"
 #
 # E0（`ActionPlanStep.args`）：contracts 0.13 / api 0.13.1 尚未发布，本轮启用。
 [patch.crates-io]
-wist-contracts = { path = "../wist-contracts" }
-wist-api = { path = "../wist-api" }
+# 2026-11-22：contracts 0.14.0 / api 0.13.2 已上 crates.io，patch 保持注释；
+# 留着会让 CI 报 `patch location ... does not contain packages`（siblings 在 CI 上不存在）。
+# wist-contracts = { path = "../wist-contracts" }
+# wist-api = { path = "../wist-api" }
