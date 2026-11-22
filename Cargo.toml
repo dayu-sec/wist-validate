@@ -1,6 +1,6 @@
 [package]
 name = "wist-validate"
-version = "0.10.0" #@gxl:set(version)
+version = "0.12.0" #@gxl:set(version)
 edition = "2024"
 license = "Apache-2.0"
 authors = ["wist Dev Team"]
@@ -14,7 +14,7 @@ categories = ["development-tools", "config", "data-structures"]
 
 [dependencies]
 time = { version = "0.3", features = ["formatting", "parsing"] }
-wist-contracts = { version = "0.12" }
+wist-contracts = { version = "0.14" }
 # 本地联调：切 path（整条链一起切）
 #wist-contracts = { version = "0.12", path = "../wist-contracts" }
 
@@ -32,6 +32,8 @@ path = "src/lib.rs"
 
 # 本地联调：与 `wist-contracts` / `wist-api` 同期改动时启用（`[patch]` 让两边解析到同一个
 # 路径源，否则会同时存在两份 contracts、类型互不认识）。**发布态不要留**：
-# [patch.crates-io]
-# wist-contracts = { path = "../wist-contracts" }
-# wist-api = { path = "../wist-api" }
+#
+# E0（`ActionPlanStep.args`）：contracts 0.13 / api 0.13.1 尚未发布，本轮启用。
+[patch.crates-io]
+wist-contracts = { path = "../wist-contracts" }
+wist-api = { path = "../wist-api" }

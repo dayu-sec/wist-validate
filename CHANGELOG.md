@@ -3,6 +3,34 @@
 本文件记录 `wist-validate` 的所有重要变更。格式遵循 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)，
 版本号遵循[语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [0.12.0] - 2026-11-22
+
+### 新增（`validate_attestation`：签发证明的**形状**校验）
+
+- `validate_action_plan` 现在会检查 `ActionPlan.attestation` 的形状：`api_version` /
+  digest 格式 / 算法 / 签名长度与 hex / `key_id` / `issued_by` / `approval_id` /
+  `required_approvers` / 审批人非空且不重复 / 时间戳与窗口 / 证明不晚于计划 / 引用一致。
+- 新错误码：`invalid_attestation_api_version`、`invalid_attestation_plan_digest`、
+  `unsupported_attestation_algorithm`、`invalid_attestation_signature`、
+  `missing_attestation_key_id`、`missing_attestation_issued_by`、
+  `missing_attestation_approval_id`、`invalid_required_approvers`、
+  `insufficient_approvers`、`duplicate_approver`、`missing_approver`、
+  `invalid_attestation_signed_at`、`invalid_attestation_expires_at`、
+  `invalid_attestation_window`、`attestation_outlives_plan`、`approval_ref_mismatch`。
+- **刻意不验签**：验签要信任锚，是执行侧（agentd）的事，而且「要不要验」由本地策略决定。
+  这一层只保证「拿到的东西长得像一份完整的证明」。
+- 对齐 `wist-contracts 0.14.0`。
+
+## [0.11.0] - 2026-11-22
+
+### 新增（`invalid_step_args`）
+
+- `validate_action_plan` 校验 `ActionPlanStep.args`：只允许 `invoke` 携带，
+  且必须是 JSON 对象或 `null`；非 `invoke` 带 `args` 一律拒绝
+  （语义未定义，不能留「看着有参数、实际被忽略」的死字段）。
+- 仍然**不**在校验器里认识 opcode / target：业务校验归 agentd 的 opcode 注册表。
+- 对齐 `wist-contracts 0.13.0`（`ActionPlanStep.args`）。
+
 ## [0.10.0] - 2026-11-21
 
 ### 变更（依赖）
