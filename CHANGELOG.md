@@ -3,6 +3,13 @@
 本文件记录 `wist-validate` 的所有重要变更。格式遵循 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)，
 版本号遵循[语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [0.13.0] - 2026-11-26
+
+### 变更（依赖）
+
+- 对齐 `wist-contracts 0.15.0`（新增采集来源 `HostFlow`）。本仓代码无改动；
+  对外暴露 contracts 类型，必须与 contracts 0.15 一起用。
+
 ## [0.12.0] - 2026-11-22
 
 ### 新增（`validate_attestation`：签发证明的**形状**校验）
