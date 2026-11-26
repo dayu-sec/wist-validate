@@ -7,8 +7,10 @@
 
 ### 变更（依赖）
 
-- 对齐 `wist-contracts 0.15.0`（新增采集来源 `HostFlow`）。本仓代码无改动；
-  对外暴露 contracts 类型，必须与 contracts 0.15 一起用。
+- 对齐 `wist-contracts 0.15.0`（新增采集来源 `HostFlow`）与 `wist-api 0.14.0`。本仓代码无改动；
+  但报文校验接收的是 `wist_api` 的类型，而 api 直接引用 contracts 的领域类型 ——
+  **两个依赖必须同步升**，否则树里会同时出现 contracts 0.14 与 0.15，
+  同一个 `ActionPlan` 变成两个不兼容的类型。
 
 ## [0.12.0] - 2026-11-22
 
