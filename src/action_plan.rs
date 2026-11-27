@@ -593,4 +593,43 @@ mod tests {
         // 要不要强制带 attestation 由执行侧策略决定，不是契约层的事。
         validate_action_plan(&base_plan()).expect("unattested plan is structurally fine");
     }
+
+    /// 窗口的两个边界各自不同：证明可以和计划**同时**到期（只有“更晚”才是越界），
+    /// 但自己的窗口必须**严格**递增 —— `signed_at == expires_at` 是一个空窗口。
+    #[test]
+    fn attestation_window_boundaries_are_strict_and_inclusive_respectively() {
+        let mut plan = attested_plan();
+        let plan_expires = plan.meta.expires_at.clone();
+        plan.attestation.as_mut().expect("attestation").expires_at = plan_expires;
+        validate_action_plan(&plan).expect("证明与计划同时到期是允许的（取更短的那个）");
+
+        let mut plan = attested_plan();
+        {
+            let attestation = plan.attestation.as_mut().expect("attestation");
+            attestation.expires_at = attestation.signed_at.clone();
+        }
+        assert_code(validate_action_plan(&plan), "invalid_attestation_window");
+    }
+
+    /// `approval_ref` 是**引用**，按字面量匹配：带首尾空白就是另一张审批单。
+    /// 与 `entry_matching_is_exact_not_trimmed` 同一条规矩（这里不做规范化）。
+    #[test]
+    fn approval_ref_matching_is_exact_not_trimmed() {
+        let mut plan = attested_plan();
+        plan.constraints.approval_ref = Some(" apv-1 ".to_string());
+        assert_code(validate_action_plan(&plan), "approval_ref_mismatch");
+    }
+
+    /// 这层只判**窗口形状**（`expires_at > compiled_at`），不判“现在是不是已经过期”：
+    /// 计划还能不能执行由执行侧按自己的时钟决定。
+    ///
+    /// 错误码叫 `expired_or_non_increasing_window`，但**没有**与当前时间比较 ——
+    /// 这条用例把这个语义钉住（改成立即拒过去窗口，审计/回放的样例会随日期变红）。
+    #[test]
+    fn expiry_is_a_window_check_not_a_wall_clock_check() {
+        let mut plan = base_plan();
+        plan.meta.compiled_at = "2000-01-01T00:00:00Z".to_string();
+        plan.meta.expires_at = "2000-01-01T00:05:00Z".to_string();
+        validate_action_plan(&plan).expect("已经过去的时间窗口仍是一个合法窗口");
+    }
 }

@@ -264,6 +264,15 @@ mod tests {
         }
     }
 
+    /// `acknowledged_at == received_at` 允许（只有“早于”才拒）：
+    /// 两边精度只到秒时，同一秒内收下并确认是最常见的形状。
+    #[test]
+    fn acknowledged_exactly_at_received_is_allowed() {
+        let mut ack = base_ack(AckStatus::Accepted);
+        ack.acknowledged_at = ack.received_at.clone();
+        validate_action_plan_ack(&ack).expect("同一秒内确认是合法的");
+    }
+
     #[test]
     fn ack_header_and_identity_errors_have_stable_codes() {
         let cases: &[Case<ActionPlanAck>] = &[

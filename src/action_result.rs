@@ -418,4 +418,32 @@ mod tests {
         result.step_records[0].attempt = u32::MAX;
         validate_action_result(&result).expect("unsigned maximum attempt is valid");
     }
+
+    /// 终态一致性是**存在性**判定，不是“所有步都得同一状态”：
+    /// 一次执行里已经成功的步，不因为后面超时/失败就变成 timed_out/failed ——
+    /// 只要本步状态序列里**有一个**对得上的就行。
+    #[test]
+    fn failed_and_timed_out_results_accept_mixed_step_statuses() {
+        // failed：一个 failed 步 + 一个已成功的步。
+        let mut failed = base_result(FinalStatus::Failed);
+        let mut succeeded_step = step_record(StepStatus::Succeeded);
+        succeeded_step.step_id = "step_before".to_string();
+        failed.step_records.push(succeeded_step);
+        validate_action_result(&failed).expect("有一个 failed 步就成立");
+
+        // timed_out：一个 timed_out 步 + 一个被跳过的步。
+        let mut timed_out = base_result(FinalStatus::TimedOut);
+        let mut skipped = step_record(StepStatus::Skipped);
+        skipped.step_id = "step_after".to_string();
+        timed_out.step_records.push(skipped);
+        validate_action_result(&timed_out).expect("有一个 timed_out 步就成立");
+
+        // 反过来：一个 failed 步都没有就不成立（存在性判定的另一面）。
+        let mut none_failed = base_result(FinalStatus::Failed);
+        none_failed.step_records[0].status = StepStatus::Succeeded;
+        assert_code(
+            validate_action_result(&none_failed),
+            "failed_result_has_no_failed_step",
+        );
+    }
 }
