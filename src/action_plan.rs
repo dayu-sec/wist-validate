@@ -115,11 +115,17 @@ fn validate_attestation(contract: &ActionPlan) -> Result<(), ValidationError> {
     if attestation.api_version != API_VERSION_V1 {
         return Err(ValidationError::new("invalid_attestation_api_version"));
     }
-    if !attestation
+    // `plan-v1:sha256:<64 hex>`：前缀、长度、hex 三件都要成立。
+    //
+    // 只查前缀与长度会让 `plan-v1:sha256:` + `"z"×64` 也过，与下面签名的口径
+    // （`is_ascii_hexdigit`）不一致。用 `strip_prefix` 而不是按字节切片：
+    // 未经校验的 UTF-8 在非字符边界上切会 panic（这是对外部报文的校验，不能有这种面）。
+    let digest_hex = attestation
         .plan_digest
-        .starts_with(&format!("{PLAN_DIGEST_VERSION}:sha256:"))
-        || attestation.plan_digest.len() != PLAN_DIGEST_VERSION.len() + ":sha256:".len() + 64
-    {
+        .strip_prefix(&format!("{PLAN_DIGEST_VERSION}:sha256:"));
+    let digest_is_well_formed = digest_hex
+        .is_some_and(|hex| hex.len() == 64 && hex.bytes().all(|byte| byte.is_ascii_hexdigit()));
+    if !digest_is_well_formed {
         return Err(ValidationError::new("invalid_attestation_plan_digest"));
     }
     if attestation.algorithm != ATTESTATION_ALGORITHM_ED25519 {
@@ -158,6 +164,11 @@ fn validate_attestation(contract: &ActionPlan) -> Result<(), ValidationError> {
     }
 
     let signed_at = parse_rfc3339(&attestation.signed_at, "invalid_attestation_signed_at")?;
+    // 审批时间与其它时间戳同口径：形状校验就得能读，否则下游按时间排序/判窗时会默默把它当 0。
+    parse_rfc3339(
+        &attestation.approval.approved_at,
+        "invalid_attestation_approved_at",
+    )?;
     let expires_at = parse_rfc3339(&attestation.expires_at, "invalid_attestation_expires_at")?;
     if expires_at <= signed_at {
         return Err(ValidationError::new("invalid_attestation_window"));
@@ -517,6 +528,11 @@ mod tests {
             ("invalid_attestation_plan_digest", |plan| {
                 plan.attestation.as_mut().unwrap().plan_digest = "abc".to_string();
             }),
+            ("invalid_attestation_plan_digest", |plan| {
+                // 前缀与长度都对、但尾巴 64 位不是 hex：与签名同口径，必须拒。
+                plan.attestation.as_mut().unwrap().plan_digest =
+                    format!("{PLAN_DIGEST_VERSION}:sha256:{}", "z".repeat(64));
+            }),
             ("insufficient_approvers", |plan| {
                 let attestation = plan.attestation.as_mut().unwrap();
                 attestation.approval.required_approvers = 2;
@@ -573,6 +589,10 @@ mod tests {
             }),
             ("invalid_attestation_expires_at", |plan| {
                 plan.attestation.as_mut().unwrap().expires_at = "not-a-time".to_string();
+            }),
+            ("invalid_attestation_approved_at", |plan| {
+                // 审批时间是唯一一个以前没校验的时间戳：其它三个都能读，它也得能读。
+                plan.attestation.as_mut().unwrap().approval.approved_at = "not-a-time".to_string();
             }),
             ("invalid_attestation_window", |plan| {
                 // signed_at 晚于 expires_at：窗口本身就是错的。
