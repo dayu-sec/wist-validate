@@ -1,6 +1,6 @@
 [package]
 name = "wist-validate"
-version = "0.13.0" #@gxl:set(version)
+version = "0.14.0" #@gxl:set(version)
 edition = "2024"
 license = "Apache-2.0"
 authors = ["wist Dev Team"]
@@ -14,12 +14,12 @@ categories = ["development-tools", "config", "data-structures"]
 
 [dependencies]
 time = { version = "0.3", features = ["formatting", "parsing"] }
-wist-contracts = { version = "0.15" }
+wist-contracts = { version = "0.16" }
 # 本地联调：切 path（整条链一起切）
 #wist-contracts = { version = "0.12", path = "../wist-contracts" }
 
 # 跨进程 seam 报文（agent 面）。
-wist-api = { version = "0.14" }
+wist-api = { version = "0.15" }
 # 本地联调：切 path（整条链一起切）
 #wist-api = { version = "0.13", path = "../wist-api" }
 

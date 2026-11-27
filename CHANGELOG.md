@@ -3,6 +3,15 @@
 本文件记录 `wist-validate` 的所有重要变更。格式遵循 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)，
 版本号遵循[语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [0.14.0] - 2026-11-27
+
+### 变更（依赖）
+
+- 对齐 `wist-contracts 0.16.0`（新增主机流记录契约 `host_flow`）与 `wist-api 0.15.0`。
+  本仓代码无改动；但报文校验接收的是 `wist_api` 的类型，而 api 直接引用 contracts 的领域类型 ——
+  **两个依赖必须同步升**，否则树里会同时出现 contracts 0.15 与 0.16，
+  同一个 `ActionPlan` 变成两个不兼容的类型。
+
 ## [0.13.0] - 2026-11-26
 
 ### 变更（依赖）
